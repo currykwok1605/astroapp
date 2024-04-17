@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: astro-deployment
+  namespace: astro-mc-internal
+  labels:
+    app: astro-deployment
+spec:
+  minReadySeconds: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 40%
+      maxUnavailable: 40%
+  selector:
+    matchLabels:
+      app: astro-pod
+  template:
+    metadata:
+      labels:
+        app: astro-pod
+    spec:
+      containers:
+      - name: astro
+        image: node:lts-bullseye-slim
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: astro-port
+          containerPort: 4321
+        command:
+          - 'sh'
+          - '-c'
+          - 'cd /project && npm install && npm run dev -- --host 0.0.0.0 & tail -f /dev/null '
+        resources:
+          limits:
+            cpu: 300m
+#            memory: 100Mi
+          requests:
+            cpu: 200m
+#            memory: 50Mi
+        startupProbe:
+          tcpSocket:
+            port: astro-port
+          initialDelaySeconds: 5
+          failureThreshold: 60
+          timeoutSeconds: 3
+          periodSeconds: 10
+        livenessProbe:
+          tcpSocket:
+            port: astro-port
+          failureThreshold: 3
+          periodSeconds: 10
+          timeoutSeconds: 3
+        readinessProbe:
+          tcpSocket:
+            port: astro-port
+          periodSeconds: 3
+          timeoutSeconds: 3
+        volumeMounts:
+        - mountPath: /project
+          name: astro-content
+      volumes:
+      - name: astro-content
+        persistentVolumeClaim:
+         claimName: astro-data-pv-claim
