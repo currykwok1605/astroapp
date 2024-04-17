@@ -10,8 +10,8 @@ spec:
   strategy:
     type: RollingUpdate
     rollingUpdate:
-      maxSurge: 50%
-      maxUnavailable: 50%
+      maxSurge: 40%
+      maxUnavailable: 40%
   selector:
     matchLabels:
       app: astro-pod
