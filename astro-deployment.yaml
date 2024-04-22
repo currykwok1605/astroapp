@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: astro
-        image: node:lts-bullseye-slim
+        image: pvgharbor.duckdns.org/astro/astro:v2
         imagePullPolicy: IfNotPresent
         ports:
         - name: astro-port
