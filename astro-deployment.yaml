@@ -26,11 +26,7 @@ spec:
         imagePullPolicy: IfNotPresent
         ports:
         - name: astro-port
-          containerPort: 4321
-        command:
-          - 'sh'
-          - '-c'
-          - 'cd /project && npm install && npm run dev -- --host 0.0.0.0 & tail -f /dev/null '
+          containerPort: 8080
         resources:
           limits:
             cpu: 300m
