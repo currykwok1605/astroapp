@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: astro
-        image: pvgharbor.duckdns.org/astro/astro:v1.3
+        image: pvgharbor.duckdns.org/astro/astro:v1.4
         imagePullPolicy: IfNotPresent
         ports:
         - name: astro-port
